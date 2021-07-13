@@ -1,0 +1,13 @@
+/* Set up Color Scheme */
+:root{
+    --primary: #788f7f;
+    --secondary: #bda382;
+    --tertiary: #493657;
+    --background: #dfe3e6;
+    --text: #383d3b;
+}
+
+body{
+    color: var(--text);
+    background-color: var(--background);
+}
