@@ -8,11 +8,23 @@
   <title>Weather Dashboard</title>
 </head>
 <body>
-    <form id="weather-form">
-        <label for="city"><h2>Search for a City:</h2></label>
-        <input type="text" name="city" id="city"/>
-        <button type="submit">Search</button>
-    </form>
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
+    <main>
+        <!-- Search Section -->
+        <aside class="search-section">
+            <form class="weather-form" id="weather-form">
+                <label for="city"><h2>Search for a City:</h2></label>
+                <input type="text" name="city" id="city" class="search input"/>
+                <button type="submit" class="search btn">Search</button>
+            </form>
+        </aside>
+        <!-- Result Section -->
+        <article>
+            <!-- Insert Current Weather Data Here -->
+        </article>
+    </main>
     <script src="./assets/script.js"></script>
 </body>
 

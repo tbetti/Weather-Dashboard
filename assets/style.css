@@ -11,3 +11,75 @@ body{
     color: var(--text);
     background-color: var(--background);
 }
+
+header{
+    background-color: var(--primary);
+    color: white;
+    text-align: center;
+    width: 100%;
+}
+
+header h1{
+    margin-top: 0px;
+    padding: 1%;
+}
+
+main{
+    display: flex;
+}
+
+/* Search Section Styling */
+.search-section{
+    width: 25%;
+    display: flex;
+}
+
+.weather-form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2%;
+    border-bottom: 2px solid var(--tertiary);
+}
+
+.search{
+    margin: 2%;
+    padding: 2%;
+    border-radius: 5px;
+}
+
+.input{
+    border: 1px solid var(--text);
+    font-size: 18px;
+}
+
+.btn{
+    background-color: var(--secondary);
+    border: none;
+}
+
+/* Display Weather Section */
+article{
+    width: 75%;
+    margin-left: 3%;
+}
+
+/* Current Weather */
+.current-card{
+    border: 2px solid var(--tertiary);
+    padding: 1.5%;
+}
+
+/* 5-Day Forecast */
+.daily-card{
+    border: 1px solid var(--secondary);
+    background-color: var(--tertiary);
+    width: 18%;
+    padding: 1%;
+    color: white;
+}
+
+.sub-heading{
+    margin: 0px;
+    text-align: center;
+}

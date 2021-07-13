@@ -1,6 +1,8 @@
 var apiKey = "0773ca9aaf5c56e841a981221d072a10";
 var formEl = document.querySelector("#weather-form");
 var cityEl = document.querySelector("#city");
+var resultsSectionEl = document.querySelector("article");
+var weatherAttribute = ["Temperature: ", "Wind: ", "Humidity: ", "UV Index: "];
 var city = "";
 
 var formSubmit = function(event){
@@ -12,6 +14,15 @@ var formSubmit = function(event){
     getLatLon();
 }
 
+// Take any city name that has multiple words and join each word with a "+".
+// Example: New York City => New+York+City
+function splitString(string){
+    string = string.split(" ");
+    string = string.join("+");
+    return string;
+}
+
+formEl.addEventListener("submit", formSubmit);
 // Get latitude and longitude of city
 function getLatLon(){
     var requestUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
@@ -46,8 +57,9 @@ function getWeather(url){
             var humidity = data.current.humidity;
             var uvIndex = data.current.uvi;
             var date = getDate(data.current.dt);
+            var dataValues = [temp + "F", wind + " MPH", humidity + "%", uvIndex];
             
-            console.log(date);
+            createCurrentCard(date, dataValues);
             console.log("Temperature: " + temp);
             console.log("Windspeed: " + wind);
             console.log("Humidity: " + humidity);
@@ -65,12 +77,20 @@ function getDate(unix){
     return weekday + ", " + month + "/" + day;
 }
 
-// Take any city name that has multiple words and join each word with a "+".
-// Example: New York City => New+York+City
-function splitString(string){
-    string = string.split(" ");
-    string = string.join("+");
-    return string;
-}
+// Create card to display current weather information
+function createCurrentCard(date, dataValues){
+    var currentCard = document.createElement("div")
+    currentCard.setAttribute("class", "current-card");
+    
+    var displayCity = document.createElement("h2");
+    displayCity.textContent = date;
 
-formEl.addEventListener("submit", formSubmit);
+    currentCard.appendChild(displayCity);
+
+    for(var i=0; i<4; i++){
+        var listItem = document.createElement("p");
+        listItem.textContent = weatherAttribute[i] + dataValues[i];
+        currentCard.appendChild(listItem);
+    }
+    resultsSectionEl.appendChild(currentCard);
+}
