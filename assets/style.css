@@ -31,7 +31,6 @@ main{
 /* Search Section Styling */
 .search-section{
     width: 25%;
-    display: flex;
 }
 
 .weather-form{
@@ -58,6 +57,10 @@ main{
     border: none;
 }
 
+.btn:hover{
+    cursor: pointer;
+}
+
 /* Display Weather Section */
 article{
     width: 75%;
@@ -71,15 +74,20 @@ article{
 }
 
 /* 5-Day Forecast */
+.card-container{
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .daily-card{
     border: 1px solid var(--secondary);
     background-color: var(--tertiary);
-    width: 18%;
+    width: 16%;
     padding: 1%;
     color: white;
 }
 
-.sub-heading{
+.subheading{
     margin: 0px;
     text-align: center;
 }
