@@ -11,22 +11,19 @@ fiveDayHeading.textContent = "5-Day Forecast";
 // Other global variables
 var weatherAttribute = ["Temperature: ", "Wind: ", "Humidity: ", "UV Index: "];
 var city = "";
+var cityName;
 
 // When submit button pressed, get latitude and longitude of city
 var formSubmit = function (event) {
     event.preventDefault();
-    //clearAll();
-
+    resultsSectionEl.innerHTML="";
+    
+    cityName = cityEl.value;
     city = splitString(cityEl.value);
+    cityEl.value="";
 
     getLatLon();
-    resultsSectionEl.innerHTML="";
 }
-
-// function clearAll(){
-//     var currentCard = document.querySelector(".current-card");
-//     resultsSectionEl.removeChild(currentCard);
-// }
 
 // Take any city name that has multiple words and join each word with a "+".
 // Example: New York City => New+York+City
@@ -38,7 +35,10 @@ function splitString(string) {
 
 var button = function(event){
     city = event.target.getAttribute("data-city");
-    console.log("button pressed");
+    cityName = event.target.getAttribute("data-name");
+    resultsSectionEl.innerHTML="";
+    cityEl.value="";
+
     getLatLon();
 }
 
@@ -56,7 +56,8 @@ function getLatLon() {
             newBtn.setAttribute("id", "city-btn");
             newBtn.setAttribute("class", "btn search city");
             newBtn.setAttribute("data-city", city);
-            newBtn.textContent = cityEl.value;
+            newBtn.setAttribute("data-name", cityName);
+            newBtn.textContent = cityName;
             searchSection.appendChild(newBtn);
 
             newBtn.addEventListener("click", button);
@@ -89,8 +90,7 @@ function getWeather(url) {
             var humidity = data.current.humidity;
             var uvIndex = data.current.uvi;
             var date = getDate(data.current.dt);
-            var iconUrl = "https://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png" // create image tag and put as source
-            console.log(iconUrl);
+            var iconUrl = "https://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png"
 
             var currentDataValues = [iconUrl, temp.toFixed(0) + "°F", wind + " MPH", humidity + "%", uvIndex];
             createCurrentCard(date, currentDataValues);
@@ -134,7 +134,7 @@ function createCurrentCard(date, dataValues) {
     currentCard.setAttribute("class", "current-card");
 
     var displayCity = document.createElement("h2");
-    displayCity.textContent = cityEl.value + " (" + date[1] + ", " + date[2] + "/" + date[3] +")";
+    displayCity.textContent = cityName + " (" + date[1] + ", " + date[2] + "/" + date[3] +")";
     
     var displayIcon = document.createElement("img");
     displayIcon.setAttribute("src", dataValues[0]);

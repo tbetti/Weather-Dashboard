@@ -77,15 +77,19 @@ article{
 /* Current Weather */
 .current-card{
     border: 4px dashed var(--tertiary);
+    background-color: white;
+    text-align: center;
     padding: 1.5%;
     margin-right: 2%;
-    background-color: white;
     font-size: 22px;
 }
 
 .current-card img{
     background-color: var(--tertiary);
     border-radius: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* 5-Day Forecast */
@@ -117,6 +121,7 @@ article{
     width: 75px;
 }
 
+/* Adjust styles for screen size - medium */
 @media screen and (max-width: 1058px){
     .card-container{
         flex-wrap: wrap;
@@ -132,6 +137,7 @@ article{
     }
 }
 
+/* Adjust styles for screen-size - small */
 @media screen and (max-width: 770px){
     main{
         flex-direction: column;
