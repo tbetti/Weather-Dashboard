@@ -1,15 +1,16 @@
 /* Set up Color Scheme */
 :root{
-    --primary: #788f7f;
-    --secondary: #bda382;
-    --tertiary: #493657;
-    --background: #dfe3e6;
-    --text: #383d3b;
+    --primary: #407076;
+    --secondary: #e0afa0;
+    --tertiary: #4a2040;
+    --light: #f9fffd;
+    --dark: #0d090a;
 }
 
 body{
-    color: var(--text);
-    background-color: var(--background);
+    color: var(--dark);
+    background-color: var(--light);
+    font-family: 'Nunito', sans-serif;
 }
 
 header{
@@ -20,6 +21,7 @@ header{
 }
 
 header h1{
+    font-family: 'Inter', sans-serif;
     margin-top: 0px;
     padding: 1%;
 }
@@ -48,13 +50,18 @@ main{
 }
 
 .input{
-    border: 1px solid var(--text);
+    border: 1px solid var(--dark);
     font-size: 18px;
 }
 
 .btn{
     background-color: var(--secondary);
+    color: var(--light);
     border: none;
+}
+
+.city{
+    width: 100%;
 }
 
 .btn:hover{
@@ -69,8 +76,16 @@ article{
 
 /* Current Weather */
 .current-card{
-    border: 2px solid var(--tertiary);
+    border: 4px dashed var(--tertiary);
     padding: 1.5%;
+    margin-right: 2%;
+    background-color: white;
+    font-size: 22px;
+}
+
+.current-card img{
+    background-color: var(--tertiary);
+    border-radius: 100%;
 }
 
 /* 5-Day Forecast */
@@ -88,6 +103,81 @@ article{
 }
 
 .subheading{
-    margin: 0px;
+    font-family: 'Inter', sans-serif;
+    text-decoration: bold;
     text-align: center;
+    margin: 0px;
+}
+
+.daily-card img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 75px;
+    width: 75px;
+}
+
+@media screen and (max-width: 1058px){
+    .card-container{
+        flex-wrap: wrap;
+        justify-content: left;
+    }
+
+    .daily-card{
+        width: 25%;
+        margin-bottom: 3%;
+        margin-left: 1.5%;
+        margin-right: 3%;
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 770px){
+    main{
+        flex-direction: column;
+        align-items: center;
+    }
+    .search-section{
+        width: 90%;
+        text-align: center;
+        border-bottom: 2px solid var(--tertiary);
+        margin-bottom: 4%;
+    }
+    .weather-form{
+        align-items: center;
+        border: none;
+    }
+    .search{
+        width: 70%;
+    }
+    .btn{
+        width: 60%;
+    }
+    .current-card{
+        padding: 6%;
+        font-size: 24px;
+    }
+    .current-card h2{
+        text-align: center;
+    }
+    .current-card img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 200px;
+        width: 200px;
+    }
+    .card-container{
+        justify-content: center;
+    }
+    .daily-card{
+        width: 95%;
+        padding: 4%;
+        text-align: center;
+        font-size: 18px;
+    }
+    .daily-card img{
+        height: 100px;
+        width: 100px;
+    }
 }
