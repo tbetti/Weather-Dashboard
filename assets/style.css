@@ -1,7 +1,7 @@
-/* Set up Color Scheme */
+/* Set up Color Scheme and Page */
 :root{
     --primary: #407076;
-    --secondary: #e0afa0;
+    --secondary: #cd8987;
     --tertiary: #4a2040;
     --light: #f9fffd;
     --dark: #0d090a;
@@ -13,6 +13,11 @@ body{
     font-family: 'Nunito', sans-serif;
 }
 
+main{
+    display: flex;
+}
+
+/* Styling for Header */
 header{
     background-color: var(--primary);
     color: white;
@@ -24,10 +29,6 @@ header h1{
     font-family: 'Inter', sans-serif;
     margin-top: 0px;
     padding: 1%;
-}
-
-main{
-    display: flex;
 }
 
 /* Search Section Styling */
@@ -64,11 +65,15 @@ main{
     width: 100%;
 }
 
+#city-btn{
+    background-color: var(--primary);
+}
+
 .btn:hover{
     cursor: pointer;
 }
 
-/* Display Weather Section */
+/* Display Results Section */
 article{
     width: 75%;
     margin-left: 3%;
@@ -119,6 +124,18 @@ article{
     margin-right: auto;
     height: 75px;
     width: 75px;
+}
+
+/* Styling for Footer */
+footer{
+    background-color: var(--primary);
+    margin-top: 4%;
+    padding: 1%;
+    text-align: center;
+}
+footer a{
+    color: white;
+    text-decoration: none;
 }
 
 /* Adjust styles for screen size - medium */
