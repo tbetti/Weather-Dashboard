@@ -71,7 +71,7 @@ function clickButton(event) {
 
 // Get latitude and longitude of city
 function getLatLon() {
-    var requestUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + API_KEY;
+    var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + API_KEY;
 
     fetch(requestUrl)
         .then(function (response) {
