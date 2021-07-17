@@ -4,50 +4,65 @@ const API_KEY = "0773ca9aaf5c56e841a981221d072a10";
 var formEl = document.querySelector("#weather-form");
 var cityEl = document.querySelector("#city");
 var searchSection = document.querySelector(".search-section");
+var buttonSection = document.querySelector(".button-container")
 var resultsSectionEl = document.querySelector(".results-section");
+buttonSection.addEventListener("click", clickButton);
 
 // Other global variables
 var weatherAttribute = ["Temperature: ", "Wind: ", "Humidity: ", "UV Index: "];
-var city;
 var cityName;
+var cityArr = JSON.parse(localStorage.getItem("cityArr")) || [];
+
+// Create buttons when webpage reloads
+for (var i=0; i<cityArr.length; i++){
+    createButton(i);
+}
 
 // When submit button pressed, get latitude and longitude of city
 var formSubmit = function (event) {
     event.preventDefault();
     resultsSectionEl.innerHTML = "";
-
-    cityName = cityEl.value;
-    city = splitString(cityEl.value);
-    cityEl.value = "";
-
-    createButton();
+    
+    splitString(cityEl.value);
+    if(cityArr.indexOf(cityName)===-1){
+        cityArr.push(cityName);
+    };
+    
+    localStorage.setItem("cityArr", JSON.stringify(cityArr));
+    buttonSection.innerHTML = "";
+    
+    for(var i=0; i < cityArr.length; i++){
+        createButton(i);
+    }
+    //createButton();
     getLatLon();
+    cityEl.value = "";
 }
 
-// Take any city name that has multiple words and join each word with a "+".
-// Example: New York City => New+York+City
+// Take any city name that has multiple words, change first letter to upper case
+// Example: new york city --> New York City
 function splitString(string) {
     string = string.split(" ");
-    string = string.join("+");
-    return string;
+    for (var i = 0; i < string.length; i++){
+        string[i] = string[i].charAt(0).toUpperCase() + string[i].slice(1);
+    }
+    cityName = string.join(" ");
 }
 
-// create button to access previous search
-function createButton() {
+// Create button to access previous search and connect it to a function
+function createButton(index) {
     var newBtn = document.createElement("button");
     newBtn.setAttribute("id", "city-btn");
     newBtn.setAttribute("class", "btn search city");
-    newBtn.setAttribute("data-city", city);
-    newBtn.setAttribute("data-name", cityName);
-    newBtn.textContent = cityName;
-    searchSection.appendChild(newBtn);
-
-    newBtn.addEventListener("click", clickButton);
+    newBtn.setAttribute("data-name", cityArr[index]);
+    newBtn.textContent = cityArr[index];
+    buttonSection.appendChild(newBtn);
 }
 
-var clickButton = function (event) {
-    city = event.target.getAttribute("data-city");
-    cityName = event.target.getAttribute("data-name");
+function clickButton(event) {
+    console.log("click");
+    var button = event.target;
+    cityName = button.getAttribute("data-name");
     resultsSectionEl.innerHTML = "";
     cityEl.value = "";
 
@@ -56,11 +71,17 @@ var clickButton = function (event) {
 
 // Get latitude and longitude of city
 function getLatLon() {
-    var requestUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + API_KEY;
+    var requestUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + API_KEY;
 
     fetch(requestUrl)
         .then(function (response) {
-            return response.json();
+            console.log(response.status !== 200);
+            if (response.status !== 200){
+                alert("City name not vaild!");
+                return;
+            } else {
+                return response.json();
+            }
         })
         .then(function (data) {
             //Use lat and lon coordinates to get weather
@@ -70,10 +91,10 @@ function getLatLon() {
             var forecastUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + API_KEY;
             getWeather(forecastUrl);
         })
-        .catch(function (err) {
-            alert("City name not vaild!");
-            return err;
-        })
+        // .catch(function (err) {
+        //     alert("City name not vaild!");
+        //     return err;
+        // })
 }
 
 // Get weather for given latitude and longitude
@@ -123,13 +144,14 @@ function getWeather(url) {
 function getDate(unix) {
     var timeStamp = unix * 1000;
     var date = new Date(timeStamp);
-    var weekdayShort = date.toLocaleString("en-US", { weekday: "short" });
-    var weekdayLong = date.toLocaleString("en-US", { weekday: "long" });
-    var month = date.toLocaleString("en-US", { month: "numeric" });
-    var day = date.toLocaleString("en-US", { day: "numeric" });
 
-    var dateArray = [weekdayShort, weekdayLong, month, day];
-    return dateArray;
+    var dateObj = {
+        shortWeekday: date.toLocaleString("en-US", { weekday: "short" }), 
+        longWeekday: date.toLocaleString("en-US", { weekday: "long" }), 
+        month: date.toLocaleString("en-US", { month: "numeric" }), 
+        day: date.toLocaleString("en-US", { day: "numeric" })
+    };
+    return dateObj;
 }
 
 // Create card to display current weather information
@@ -138,7 +160,7 @@ function createCurrentCard(date, dataValues) {
     currentCard.setAttribute("class", "current-card");
 
     var displayCity = document.createElement("h2");
-    displayCity.textContent = cityName + " (" + date[1] + ", " + date[2] + "/" + date[3] + ")";
+    displayCity.textContent = cityName + " (" + date.longWeekday + ", " + date.month + "/" + date.day + ")";
 
     var displayIcon = document.createElement("img");
     displayIcon.setAttribute("src", dataValues[0]);
@@ -161,11 +183,11 @@ function createForecast(cardContainer, date, dataValues) {
 
     var heading3 = document.createElement("h3");
     heading3.setAttribute("class", "subheading");
-    heading3.textContent = date[0];
+    heading3.textContent = date.shortWeekday;
 
     var heading4 = document.createElement("h4");
     heading4.setAttribute("class", "subheading");
-    heading4.textContent = date[2] + "/" + date[3];
+    heading4.textContent = date.month + "/" + date.day;
 
     var displayIcon = document.createElement("img");
     displayIcon.setAttribute("src", dataValues[0])
