@@ -24,17 +24,7 @@ var formSubmit = function (event) {
     resultsSectionEl.innerHTML = "";
     
     splitString(cityEl.value);
-    if(cityArr.indexOf(cityName)===-1){
-        cityArr.push(cityName);
-    };
-    
-    localStorage.setItem("cityArr", JSON.stringify(cityArr));
-    buttonSection.innerHTML = "";
-    
-    for(var i=0; i < cityArr.length; i++){
-        createButton(i);
-    }
-    //createButton();
+
     getLatLon();
     cityEl.value = "";
 }
@@ -52,15 +42,14 @@ function splitString(string) {
 // Create button to access previous search and connect it to a function
 function createButton(index) {
     var newBtn = document.createElement("button");
-    newBtn.setAttribute("id", "city-btn");
-    newBtn.setAttribute("class", "btn search city");
+    newBtn.setAttribute("id", "city-btn"+index);
+    newBtn.setAttribute("class", "btn search city city-btn");
     newBtn.setAttribute("data-name", cityArr[index]);
     newBtn.textContent = cityArr[index];
     buttonSection.appendChild(newBtn);
 }
 
 function clickButton(event) {
-    console.log("click");
     var button = event.target;
     cityName = button.getAttribute("data-name");
     resultsSectionEl.innerHTML = "";
@@ -69,17 +58,26 @@ function clickButton(event) {
     getLatLon();
 }
 
-// Get latitude and longitude of city
+// Get latitude and longitude of city; create button if URL is valid
 function getLatLon() {
     var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + API_KEY;
 
     fetch(requestUrl)
         .then(function (response) {
-            console.log(response.status !== 200);
             if (response.status !== 200){
                 alert("City name not vaild!");
                 return;
             } else {
+                if(cityArr.indexOf(cityName)===-1){
+                    cityArr.push(cityName);
+                };
+                
+                localStorage.setItem("cityArr", JSON.stringify(cityArr));
+                buttonSection.innerHTML = "";
+                
+                for(var i=0; i < cityArr.length; i++){
+                    createButton(i);
+                }
                 return response.json();
             }
         })
@@ -91,10 +89,6 @@ function getLatLon() {
             var forecastUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + API_KEY;
             getWeather(forecastUrl);
         })
-        // .catch(function (err) {
-        //     alert("City name not vaild!");
-        //     return err;
-        // })
 }
 
 // Get weather for given latitude and longitude
@@ -167,13 +161,42 @@ function createCurrentCard(date, dataValues) {
 
     currentCard.appendChild(displayCity);
     currentCard.appendChild(displayIcon);
+    resultsSectionEl.appendChild(currentCard);
 
     for (var i = 1; i < dataValues.length; i++) {
         var listItem = document.createElement("p");
-        listItem.textContent = weatherAttribute[i - 1] + dataValues[i];
-        currentCard.appendChild(listItem);
+        if (i===dataValues.length-1){
+            var uvIndex = document.createElement("span");
+            listItem.textContent = weatherAttribute[i-1];
+            uvIndex.setAttribute("id", "uv-index");
+            uvIndex.innerHTML = dataValues[i];
+            
+            listItem.appendChild(uvIndex);
+            currentCard.appendChild(listItem);
+
+            setUVColor(dataValues[i]);
+        } else {
+            listItem.textContent = weatherAttribute[i - 1] + dataValues[i];
+            currentCard.appendChild(listItem);
+        }
     }
-    resultsSectionEl.appendChild(currentCard);
+}
+
+// Set color for UV Index
+function setUVColor(uvIndex){
+    var uvEl = document.querySelector("#uv-index");
+    console.log(uvEl);
+    if(uvIndex < 3){
+        uvEl.setAttribute("class", "low");
+    } else if (uvIndex >= 3 && uvIndex < 6){
+        uvEl.setAttribute("class", "moderate");
+    } else if (uvIndex >= 6 && uvIndex < 7){
+        uvEl.setAttribute("class", "high");
+    } else if (uvIndex >= 7 && uvIndex < 11){
+        uvEl.setAttribute("class", "very-high");
+    } else {
+        uvEl.setAttribute("class", "extreme");
+    }
 }
 
 // Create forecast cards
