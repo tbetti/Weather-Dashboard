@@ -6,7 +6,6 @@ var cityEl = document.querySelector("#city");
 var searchSection = document.querySelector(".search-section");
 var buttonSection = document.querySelector(".button-container")
 var resultsSectionEl = document.querySelector(".results-section");
-buttonSection.addEventListener("click", clickButton);
 
 // Other global variables
 var weatherAttribute = ["Temperature: ", "Wind: ", "Humidity: ", "UV Index: "];
@@ -16,6 +15,27 @@ var cityArr = JSON.parse(localStorage.getItem("cityArr")) || [];
 // Create buttons when webpage reloads
 for (var i=0; i<cityArr.length; i++){
     createButton(i);
+}
+
+// Create button to access previous search and connect it to a function
+function createButton(index) {
+    var newBtn = document.createElement("button");
+    newBtn.setAttribute("id", "city-btn"+index);
+    newBtn.setAttribute("class", "btn search city city-btn");
+    newBtn.setAttribute("data-name", cityArr[index]);
+    newBtn.textContent = cityArr[index];
+    buttonSection.appendChild(newBtn);
+
+    newBtn.addEventListener("click", clickButton);
+}
+
+function clickButton(event) {
+    var button = event.target;
+    cityName = button.getAttribute("data-name");
+    resultsSectionEl.innerHTML = "";
+    cityEl.value = "";
+
+    getLatLon();
 }
 
 // When submit button pressed, get latitude and longitude of city
@@ -39,24 +59,6 @@ function splitString(string) {
     cityName = string.join(" ");
 }
 
-// Create button to access previous search and connect it to a function
-function createButton(index) {
-    var newBtn = document.createElement("button");
-    newBtn.setAttribute("id", "city-btn"+index);
-    newBtn.setAttribute("class", "btn search city city-btn");
-    newBtn.setAttribute("data-name", cityArr[index]);
-    newBtn.textContent = cityArr[index];
-    buttonSection.appendChild(newBtn);
-}
-
-function clickButton(event) {
-    var button = event.target;
-    cityName = button.getAttribute("data-name");
-    resultsSectionEl.innerHTML = "";
-    cityEl.value = "";
-
-    getLatLon();
-}
 
 // Get latitude and longitude of city; create button if URL is valid
 function getLatLon() {
@@ -185,7 +187,7 @@ function createCurrentCard(date, dataValues) {
 // Set color for UV Index
 function setUVColor(uvIndex){
     var uvEl = document.querySelector("#uv-index");
-    console.log(uvEl);
+    
     if(uvIndex < 3){
         uvEl.setAttribute("class", "low");
     } else if (uvIndex >= 3 && uvIndex < 6){
