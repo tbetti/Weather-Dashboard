@@ -2,6 +2,7 @@ const API_KEY = "0773ca9aaf5c56e841a981221d072a10";
 
 // Set up variables to access DOM
 var formEl = document.querySelector("#weather-form");
+var clearBtn = document.querySelector("#clear-btn");
 var cityEl = document.querySelector("#city");
 var searchSection = document.querySelector(".search-section");
 var buttonSection = document.querySelector(".button-container")
@@ -21,7 +22,7 @@ for (var i=0; i<cityArr.length; i++){
 function createButton(index) {
     var newBtn = document.createElement("button");
     newBtn.setAttribute("id", "city-btn"+index);
-    newBtn.setAttribute("class", "btn search city city-btn");
+    newBtn.setAttribute("class", "btn search city-btn");
     newBtn.setAttribute("data-name", cityArr[index]);
     newBtn.textContent = cityArr[index];
     buttonSection.appendChild(newBtn);
@@ -49,6 +50,15 @@ var formSubmit = function (event) {
     cityEl.value = "";
 }
 
+// When clear button pressed, clear city data and buttons
+function clearButton(event){
+    event.preventDefault();
+    
+    buttonSection.innerHTML="";
+    cityArr = [];
+    localStorage.clear();
+}
+
 // Take any city name that has multiple words, change first letter to upper case
 // Example: new york city --> New York City
 function splitString(string) {
@@ -58,7 +68,6 @@ function splitString(string) {
     }
     cityName = string.join(" ");
 }
-
 
 // Get latitude and longitude of city; create button if URL is valid
 function getLatLon() {
@@ -231,3 +240,4 @@ function createForecast(cardContainer, date, dataValues) {
 }
 
 formEl.addEventListener("submit", formSubmit);
+clearBtn.addEventListener("click", clearButton);

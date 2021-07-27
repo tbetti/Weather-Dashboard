@@ -63,12 +63,9 @@ header h1{
     border: none;
 }
 
-.city{
-    width: 100%;
-}
-
 .city-btn{
     background-color: var(--primary);
+    width: 100%;
 }
 
 .btn:hover{
