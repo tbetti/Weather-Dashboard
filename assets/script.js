@@ -15,11 +15,11 @@ var cityArr = JSON.parse(localStorage.getItem("cityArr")) || [];
 
 // Create buttons when webpage reloads
 for (var i=0; i<cityArr.length; i++){
-    createButton(i);
+    createCityButton(i);
 }
 
 // Create button to access previous search and connect it to a function
-function createButton(index) {
+function createCityButton(index) {
     var newBtn = document.createElement("button");
     newBtn.setAttribute("id", "city-btn"+index);
     newBtn.setAttribute("class", "btn search city-btn");
@@ -27,10 +27,10 @@ function createButton(index) {
     newBtn.textContent = cityArr[index];
     buttonSection.appendChild(newBtn);
 
-    newBtn.addEventListener("click", clickButton);
+    newBtn.addEventListener("click", clickCityButton);
 }
 
-function clickButton(event) {
+function clickCityButton(event) {
     var button = event.target;
     cityName = button.getAttribute("data-name");
     resultsSectionEl.innerHTML = "";
@@ -87,7 +87,7 @@ function getLatLon() {
                 buttonSection.innerHTML = "";
                 
                 for(var i=0; i < cityArr.length; i++){
-                    createButton(i);
+                    createCityButton(i);
                 }
                 return response.json();
             }

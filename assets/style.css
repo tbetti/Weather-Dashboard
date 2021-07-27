@@ -57,10 +57,20 @@ header h1{
     font-size: 18px;
 }
 
+.form-btn-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
 .btn{
     background-color: var(--secondary);
     color: var(--light);
     border: none;
+}
+
+.form-btn{
+    width: 50%;
 }
 
 .city-btn{
@@ -70,6 +80,7 @@ header h1{
 
 .btn:hover{
     cursor: pointer;
+    background-color: var(--tertiary);
 }
 
 /* Display Results Section */
@@ -195,6 +206,9 @@ footer a{
     }
     .search{
         width: 70%;
+    }
+    .form-btn-container{
+        width: 77%;
     }
     .btn{
         width: 60%;
